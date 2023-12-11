@@ -1,1 +1,243 @@
-<h1>Hello World</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<!--
+    Author: Matthew Sittler
+    Lewis email: matthewjsittler@lewisu.edu
+    Credits: Matthew Sittler, ChatGPT
+
+    All Rights Reserved
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Are You Smarter Than a Fifth Grader?!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #4CAF50; 
+            color: #000000; 
+        }
+
+        .quiz-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff; 
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .option {
+            margin-bottom: 10px;
+        }
+
+        .submit-btn, .restart-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50; 
+            color: #fff; 
+            border: none;
+            border-radius: 5px;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>Are You Smarter Than a 5th Grader?!</h1>
+    <p>Do you think you are smarter than a 5th grader? Well, test your skills now in this quiz filled with questions from your 5th grade class. Read the question, click the button with the answer you think is correct, then click submit to move on. There is a restart button if you would like to retake the quiz as well. Good luck!</p>
+    <form id="quiz-form">
+        <div class="question" id="question"></div>
+        <ul class="options" id="options"></ul>
+        <button type="button" class="submit-btn" onclick="checkAnswer()">Submit</button>
+    </form>
+    <p id="result"></p>
+    <button type="button" class="restart-btn" onclick="restartQuiz()">Restart Quiz</button>
+</div>
+
+<script>
+    const quizData = [
+        {
+            question: "If a backyard is 50 feet long and 20 feet wide, how many square feet is the yard?",
+            options: ["4,000 Square Foot", "1,500 Square Foot", "1,000 Square Foot", "2,000 Square Foot"],
+            correctAnswer: "1,000 Square Foot"
+        },
+        {
+            question: "On the periodic table, which element is represented by the letter N?",
+            options: ["Nickel", "Nitrogen", "Neon", "Nihonium"],
+            correctAnswer: "Nitrogen"
+        },
+        {
+            question: "How many feet are there in 75 yards?",
+            options: ["250 Feet", "275 Feet", "300 Feet", "225 Feet"],
+            correctAnswer: "225 Feet"
+        },
+        {
+            question: "In what month do Americans go trick-or-treating?",
+            options: ["December", "September", "November", "October"],
+            correctAnswer: "October"
+        },
+        {
+            question: "What gas do humans need in order to live?",
+            options: ["Carbon Dioxide", "Oxygen", "Nitrogen", "Argon"],
+            correctAnswer: "Oxygen"
+        },
+        {
+            question: "What is the hardest mineral?",
+            options: ["Diamond", "Emerald", "Quartz", "Lapis"],
+            correctAnswer: "Diamond"
+        },
+        {
+            question: "What does a paleontologist study?",
+            options: ["Weather", "Marine Life", "Fossils", "Plants"],
+            correctAnswer: "Fossils"
+        },
+        {
+            question: "Who invented the lightbulb?",
+            options: ["Thomas Edison", "J. Robert Oppenheimer", "Benjamin Franklin", "Albert Einstein"],
+            correctAnswer: "Thomas Edison"
+        },
+        {
+            question: "How much is 14 times 5?",
+            options: ["70", "65", "75", "90"],
+            correctAnswer: "70"
+        },
+        {
+            question: "Which general led U.S. troops during the Vietnam War?",
+            options: ["General Omar Nelson Bradley", "General Henry Dearborn", "General Douglas MacArthur", "General William Westmoreland"],
+            correctAnswer: "General William Westmoreland"
+        },
+        {
+            question: "The Tropic of Capricorn lies in which hemisphere?",
+            options: ["Northern Hemisphere", "Southern hemisphere"],
+            correctAnswer: "Southern hemisphere"
+        },
+        {
+            question: "What are the large rocks that orbit the sun between Mars and Jupiter called?",
+            options: ["Meteors", "Asteroids", "Comets", "Dwarf Planets"],
+            correctAnswer: "Asteroids"
+        },
+        {
+            question: "What is the plural form of the word 'deer'?",
+            options: ["Deer", "Deers", "Deese", "Doe"],
+            correctAnswer: "Deer"
+        },
+        {
+            question: "How many inches are in a foot?",
+            options: ["10", "11", "12", "13"],
+            correctAnswer: "12"
+        },
+        {
+            question: "During World War II, on the day known as D-Day, at what location did allied troops invade Europe?",
+            options: ["Beaches of Normandy, France", "Island of Okinawa, Japan", "Island of Iwo Jima, Japan", "Island of Sicily, Italy"],
+            correctAnswer: "Beaches of Normandy, France"
+        },
+        {
+            question: "How many adjectives are in this sentence: 'Billy made a rude noise in class.'",
+            options: ["Three", "Two", "Four", "One"],
+            correctAnswer: "One"
+        },
+        {
+            question: "What land mass on earth is known as the 'Island Continent'?",
+            options: ["Japan", "Australia", "Cuba", "Greenland"],
+            correctAnswer: "Australia"
+        },
+        {
+            question: "What is the longest river in the United States?",
+            options: ["Dupage River", "Mississippi River", "Missouri River", "Rio Grande River"],
+            correctAnswer: "Missouri River"
+        },
+        {
+            question: "What is the clinical name for the thigh bone?",
+            options: ["Femur", "Pelvis", "Fibula", "Tibia"],
+            correctAnswer: "Femur"
+        },
+        {
+            question: "Who painted the Mona Lisa?",
+            options: ["Pablo Picasso", "Vincent Van Gogh", "Leonardo Da Vinci", "Leonardo DiCaprio"],
+            correctAnswer: "Leonardo Da Vinci"
+        }
+    ];
+
+    let currentQuestion = 0;
+    let correctAnswers = 0;
+    const questionElement = document.getElementById("question");
+    const optionsElement = document.getElementById("options");
+    const resultElement = document.getElementById("result");
+
+    function loadQuestion() {
+        const currentQuizData = quizData[currentQuestion];
+        questionElement.innerText = currentQuizData.question;
+        optionsElement.innerHTML = currentQuizData.options.map(option =>
+            `<li class="option"><input type="radio" name="answer" value="${option}">${option}</li>`
+        ).join("");
+    }
+
+    function checkAnswer() {
+        const selectedOption = document.querySelector('input[name="answer"]:checked');
+        if (!selectedOption) {
+            alert("Please select an answer");
+            return;
+        }
+
+        const userAnswer = selectedOption.value;
+        const correctAnswer = quizData[currentQuestion].correctAnswer;
+
+        if (userAnswer === correctAnswer) {
+            correctAnswers++;
+        }
+
+        currentQuestion++;
+        if (currentQuestion < quizData.length) {
+            loadQuestion();
+        } else {
+            displayResult();
+        }
+    }
+
+    function displayResult() {
+        const totalQuestions = quizData.length;
+        const grade = (correctAnswers / totalQuestions) * 100;
+        resultElement.innerText = `Quiz completed! Your grade: ${grade.toFixed(2)}%`;
+        document.getElementById("quiz-form").style.display = "none";
+        document.querySelector(".restart-btn").style.display = "block";
+    }
+
+    function restartQuiz() {
+        currentQuestion = 0;
+        correctAnswers = 0;
+        loadQuestion();
+        resultElement.innerText = "";
+        document.getElementById("quiz-form").style.display = "block";
+        document.querySelector(".restart-btn").style.display = "none";
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>
+
+
